@@ -1,0 +1,45 @@
+{
+  "name": "@gioboa/vite-module-federation",
+  "version": "0.1.0",
+  "description": "Vite/Rollup plugin for Module Federation",
+  "type": "module",
+  "source": "src/index.ts",
+  "main": "./lib/index.cjs",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "prepare": "husky install",
+    "format": "pretty-quick",
+    "dev": "microbundle watch",
+    "build": "rm -rf lib && microbundle --no-sourcemap"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gioboa/vite-module-federation.git"
+  },
+  "keywords": [
+    "vite",
+    "module federation",
+    "microfrontend"
+  ],
+  "author": {
+    "name": "Giorgio Boa",
+    "email": "giorgiob.boa@gmail.com",
+    "url": "https://github.com/gioboa"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gioboa/vite-module-federation/issues"
+  },
+  "homepage": "https://github.com/gioboa/vite-module-federation#readme",
+  "peerDependencies": {
+    "@softarc/native-federation": "^0.9.2-beta.7"
+  },
+  "devDependencies": {
+    "husky": "^8.0.0",
+    "microbundle": "^0.15.1",
+    "pretty-quick": "^3.1.3"
+  }
+}
