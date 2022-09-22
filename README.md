@@ -28,7 +28,7 @@ You need to extend the Vite configuration with this plugin:
 ```typescript
 import { defineConfig } from 'vite';
 import { federation } from '@gioboa/vite-module-federation';
-import { esBuildAdapter } from './module-federation/esbuild-adapter';
+import { createEsBuildAdapter } from '@softarc/native-federation-esbuild';
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
@@ -41,7 +41,9 @@ export default defineConfig(async () => ({
         federationConfig: 'module-federation/federation.config.cjs',
         verbose: false,
       },
-      adapter: esBuildAdapter,
+      adapter: createEsBuildAdapter({
+				plugins: [],
+			}),
     }),
     [...]
   ],
@@ -50,7 +52,7 @@ export default defineConfig(async () => ({
 
 <br>
 
-### Second step
+### Define configs
 
 You need to define two different configurations in the `federationConfig` property.<br>
 Here two examples:
@@ -58,33 +60,6 @@ Here two examples:
 - [host](https://www.npmjs.com/package/@softarc/native-federation#configuring-hosts)
 - [remote](https://www.npmjs.com/package/@softarc/native-federation#configuring-remotes)
   <br><br>
-
-### Last step
-
-As this plugin is tooling-agnostic, you need a simple adapter for your bundler, it's just a matter of one function.
-Here an example:
-
-```typescript
-import type { BuildAdapter } from '@softarc/native-federation/build';
-import * as esbuild from 'esbuild';
-
-export const esBuildAdapter: BuildAdapter = async (options) => {
-  const { entryPoint, external, outfile } = options;
-
-  await esbuild.build({
-    entryPoints: [entryPoint],
-    external,
-    outfile,
-    bundle: true,
-    sourcemap: false,
-    minify: true,
-    format: 'esm',
-    target: ['esnext'],
-  });
-};
-```
-
-<br>
 
 ### So far so good 🎉
 

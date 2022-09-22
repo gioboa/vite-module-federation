@@ -2,7 +2,11 @@ import { BuildHelperParams, federationBuilder } from '@softarc/native-federation
 import * as fs from 'fs';
 import * as path from 'path';
 
-export async function federation(params: BuildHelperParams) {
+import mime from 'mime-types';
+import { Connect, ViteDevServer } from 'vite';
+import { devExternalsMixin } from './dev-externals-mixin';
+
+export const federation = async (params: BuildHelperParams) => {
   return {
     name: 'vite-module-federation', // required, will show up in warnings and errors
     async options(o: unknown) {
@@ -11,15 +15,73 @@ export async function federation(params: BuildHelperParams) {
     },
     async closeBundle() {
       await federationBuilder.build();
-      transformIndexHtml(params);
     },
+    async configureServer(server: ViteDevServer) {
+      await configureDevServer(server, params);
+    },
+    transformIndexHtml(html: string) {
+      return html.replace(/type="module"/g, 'type="module-shim"');
+    },
+    ...devExternalsMixin,
   };
-}
+};
 
-function transformIndexHtml(params: BuildHelperParams): void {
-  const filePath = path.join(params.options.workspaceRoot, params.options.outputPath, 'index.html');
+const configureDevServer = async (server: ViteDevServer, params: BuildHelperParams) => {
+  await federationBuilder.build({
+    skipExposed: true,
+    skipMappings: true,
+  });
 
-  const html = fs.readFileSync(filePath, 'utf-8');
-  const modified = html.replace(/type="module"/g, 'type="module-shim"');
-  fs.writeFileSync(filePath, modified);
-}
+  const op = params.options;
+  const dist = path.join(op.workspaceRoot, op.outputPath);
+  server.middlewares.use(serveFromDist(dist));
+};
+
+const serveFromDist = (dist: string): Connect.NextHandleFunction => {
+  return (req, res, next) => {
+    if (!req.url || req.url.endsWith('/index.html')) {
+      next();
+      return;
+    }
+
+    const file = path.join(dist, req.url);
+    if (fs.existsSync(file) && fs.lstatSync(file).isFile()) {
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Content-Type', mime.lookup(req.url));
+
+      const content = fs.readFileSync(file, 'utf-8');
+      const modified = enhanceFile(file, content);
+
+      res.write(modified);
+      res.end();
+      return;
+    }
+
+    next();
+  };
+};
+
+const enhanceFile = (fileName: string, src: string): string => {
+  if (fileName.endsWith('remoteEntry.json')) {
+    let remoteEntry = JSON.parse(fs.readFileSync(fileName, 'utf-8'));
+    remoteEntry = {
+      ...remoteEntry,
+      shared: (remoteEntry.shared || []).map((el) => ({
+        ...el,
+        outFileName: el.dev?.entryPoint.includes('/node_modules/')
+          ? el.outFileName
+          : normalize(path.join('@fs', el.dev?.entryPoint || '')),
+      })),
+      exposes: (remoteEntry.exposes || []).map((el) => ({
+        ...el,
+        outFileName: normalize(path.join('@fs', el.dev?.entryPoint || '')),
+      })),
+    };
+    return JSON.stringify(remoteEntry, null, 2);
+  }
+  return src;
+};
+
+const normalize = (path: string): string => {
+  return path.replace(/\\/g, '/');
+};
