@@ -5,13 +5,14 @@ import * as path from 'path';
 import mime from 'mime-types';
 import { Connect, ViteDevServer } from 'vite';
 import { devExternalsMixin } from './dev-externals-mixin';
+import { filterExternals } from './externals-skip-list';
 
 export const federation = async (params: BuildHelperParams) => {
   return {
     name: 'vite-module-federation', // required, will show up in warnings and errors
     async options(o: unknown) {
       await federationBuilder.init(params);
-      o!['external'] = federationBuilder.externals;
+      o!['external'] = filterExternals(federationBuilder.externals);
     },
     async closeBundle() {
       await federationBuilder.build();
