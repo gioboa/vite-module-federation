@@ -1,4 +1,5 @@
 import { federationBuilder } from '@softarc/native-federation/build.js';
+import { filterExternals } from './externals-skip-list';
 
 // see: https://github.com/vitejs/vite/issues/6393#issuecomment-1006819717
 
@@ -7,7 +8,10 @@ export const devExternalsMixin = {
   config(config) {
     config.optimizeDeps = {
       ...(config.optimizeDeps ?? {}),
-      exclude: [...(config.optimizeDeps?.exclude ?? []), ...federationBuilder.externals],
+      exclude: [
+        ...(config.optimizeDeps?.exclude ?? []),
+        ...filterExternals(federationBuilder.externals),
+      ],
     };
   },
   configResolved(resolvedConfig) {
@@ -19,7 +23,7 @@ export const devExternalsMixin = {
     });
   },
   resolveId: (id) => {
-    if (federationBuilder.externals.includes(id)) {
+    if (filterExternals(federationBuilder.externals).includes(id)) {
       return { id, external: true };
     }
   },
