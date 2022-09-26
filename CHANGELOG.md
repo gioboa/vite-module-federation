@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## version 0.2.4 - quality electron (2022-09-26)
+
+### Fixes
+
+- fix README.md
+
 ## version 0.2.3 - summer steamy (2022-09-23)
 
 ### Fixes
