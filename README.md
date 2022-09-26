@@ -10,14 +10,14 @@ who collaborate with me to make this possible.
 
 ## Reason why 🤔
 
-[Microservices](https://martinfowler.com/articles/microservices.html) nowadays is a well known concept and maybe you are using it in your current company.
-Do you know that now you can apply similar ideas in the Frontend?
-With [Module Federation](https://blog.logrocket.com/building-micro-frontends-webpacks-module-federation/#:~:text=Module%20federation%20is%20a%20JavaScript,between%20two%20different%20application%20codebases.) you can load separately compiled and deployed code into an unique application.
+[Microservices](https://martinfowler.com/articles/microservices.html) nowadays is a well-known concept and maybe you are using it in your current company.
+Do you know that now you can apply similar ideas on the Frontend?
+With [Module Federation](https://blog.logrocket.com/building-micro-frontends-webpacks-module-federation/#:~:text=Module%20federation%20is%20a%20JavaScript,between%20two%20different%20application%20codebases.) you can load separately compiled and deployed code into a unique application.
 This plugin makes Module Federation work together with [Vite](https://vitejs.dev/).
 
 ## Working implementation
 
-👉 Here you can find a [working implementation](https://github.com/gioboa/svelte-microfrontend-demo) that shows how use the plugin.
+👉 Here you can find a [working implementation](https://github.com/gioboa/svelte-microfrontend-demo) that shows how to use the plugin.
 
 ## Getting started 🚀
 
@@ -38,7 +38,7 @@ export default defineConfig(async ({ command }) => ({
     },
   },
   plugins: [
-    federation({
+    await federation({
       options: {
         workspaceRoot: __dirname,
         outputPath: 'dist',
@@ -59,7 +59,7 @@ export default defineConfig(async ({ command }) => ({
 ### Define configs
 
 You need to define two different configurations in the `federationConfig` property.<br>
-Here two examples:
+Here are two examples:
 
 - [host](https://www.npmjs.com/package/@softarc/native-federation#configuring-hosts)
 - [remote](https://www.npmjs.com/package/@softarc/native-federation#configuring-remotes)
