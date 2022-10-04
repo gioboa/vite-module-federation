@@ -7,8 +7,10 @@
   "main": "./lib/index.cjs",
   "types": "lib/index.d.ts",
   "files": [
-    "lib/**/*"
+    "lib/**/*",
+    "./cli.js"
   ],
+  "bin": "./cli.js",
   "scripts": {
     "prepare": "husky install",
     "format": "pretty-quick",
