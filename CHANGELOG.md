@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## version 0.2.5 - quality electron (2022-09-26)
+
+### Feature
+
+- moved this package under the @module-federation organisation
+
 ## version 0.2.4 - quality electron (2022-09-26)
 
 ### Fixes
