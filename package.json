@@ -1,6 +1,6 @@
 {
   "name": "@gioboa/vite-module-federation",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Vite/Rollup plugin for Module Federation",
   "type": "module",
   "source": "src/index.ts",

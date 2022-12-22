@@ -2,7 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
-## version 0.2.5 - quality electron (2022-09-26)
+## version 0.2.6
+
+### Fixes
+
+- fix README.md
+- fix CHANGELOG.md
+
+## version 0.2.5
 
 ### Feature
 

@@ -1,7 +1,6 @@
-# Vite/Rollup plugin for Module Federation
+# We moved this package under the @module-federation organisation -> [@module-federation/vite](https://www.npmjs.com/package/@module-federation/vite)
 
-We moved this package under the @module-federation organisation.
-Here the link [@module-federation/vite](https://www.npmjs.com/package/@module-federation/vite)
+# Vite/Rollup plugin for Module Federation
 
 ## Thanks 🤝
 
